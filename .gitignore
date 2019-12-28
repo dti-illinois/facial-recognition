@@ -1,0 +1,5 @@
+.DS_Store
+.vscode/
+amazon-kinesis-video-streams-producer-sdk-cpp/
+webcam_to_kinesis
+faces/

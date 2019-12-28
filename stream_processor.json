@@ -1,0 +1,20 @@
+{
+       "Name": "ARCFacialRecognitionStreamProcessor",
+       "Input": {
+              "KinesisVideoStream": {
+                     "Arn": "arn:aws:kinesisvideo:us-west-2:430229884637:stream/ARCRecognitionPrototypeStream/1573267028169"
+              }
+       },
+       "Output": {
+              "KinesisDataStream": {
+                     "Arn": "arn:aws:kinesis:us-west-2:430229884637:stream/ARCFacialRecognition-Stream"
+              }
+       },
+       "RoleArn": "arn:aws:iam::430229884637:role/ARCFacialRecognitionStack-RekognitionVideoIAM-1MHDLPPYF5K89",
+       "Settings": {
+              "FaceSearch": {
+                     "CollectionId": "arc-face-rec-test",
+                     "FaceMatchThreshold": 20.0
+              }
+       }
+}
