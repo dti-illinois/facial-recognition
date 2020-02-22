@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask import request
 import sys
 import threading
-from poll_sqs import poll
+from detect_faces import detect_faces
 
 app = Flask(__name__)
 
@@ -23,5 +23,5 @@ def return_person():
     return person
 
 if __name__ == '__main__':
-    threading.Thread(target=poll, daemon=True).start()
+    threading.Thread(target=detect_faces, daemon=True).start()
     app.run(debug=True)
