@@ -5,3 +5,5 @@ webcam_to_kinesis
 faces/
 server/__pycache__/
 kinesis_ios/
+output/
+dataset/Abhinav Tekulapally/
