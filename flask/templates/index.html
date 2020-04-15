@@ -85,6 +85,10 @@
 					xhttp.open("POST", "detect", true);
 					xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 					xhttp.send(dataURL);
+				} else {
+					var xhttp = new XMLHttpRequest();
+					xhttp.open("POST", "person", true);
+					xhttp.send("None");
 				}
 
 				// draw detections
