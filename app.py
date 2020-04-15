@@ -26,7 +26,7 @@ def process_person():
 def return_person():
     return person
 
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('opencv/haarcascade_frontalface_default.xml')
 rekognition = boto3.client("rekognition", "us-west-2")
 processing = False
 
