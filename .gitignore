@@ -3,7 +3,7 @@
 amazon-kinesis-video-streams-producer-sdk-cpp/
 webcam_to_kinesis
 faces/
-flask/__pycache__/
+__pycache__/
 kinesis_ios/
 output/
 dataset/Abhinav Tekulapally/
