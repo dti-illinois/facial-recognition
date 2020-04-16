@@ -80,7 +80,7 @@
 					}
 				}
 
-				// Only send image to server around once a second (using Date object in javascript)
+				// Only send image to server and update people detected around once a second (using Date object in javascript)
 				var d = new Date();
 				if (d.getTime() % 1000 < 50) {
 					if(numFaces > 0) {
@@ -103,7 +103,7 @@
 							console.log(this.responseText);
 						}
 					};
-					xhttp.open("GET", "http://127.0.0.1:5000/person?t=" + Math.random(), true);
+					xhttp.open("GET", "person?t=" + Math.random(), true);
 					xhttp.send();
 				}
 
