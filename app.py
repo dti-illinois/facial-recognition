@@ -26,7 +26,6 @@ def process_person():
 def return_person():
     return person
 
-face_cascade = cv2.CascadeClassifier('opencv/haarcascade_frontalface_default.xml')
 rekognition = boto3.client("rekognition", "us-west-2")
 processing = False
 
@@ -36,26 +35,21 @@ def process_image(data):
     encoded_data = data[22:]
     nparr = np.frombuffer(base64.b64decode(encoded_data), np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+    
     output = ""
-    for (x, y, w, h) in faces:
-        cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
-        response = rekognition.search_faces_by_image(
-            Image={
-                "Bytes": bytearray(cv2.imencode('.png', img[y:y + h, x:x + w])[1])
-            },
-            CollectionId="arc-face-rec-test",
-            FaceMatchThreshold=80,
-        )
-        if len(response['FaceMatches']) == 0:
-            print("Unrecognized face detected:")
-            continue
+    response = rekognition.search_faces_by_image(
+        Image={
+            "Bytes": bytearray(cv2.imencode('.png', img)[1])
+        },
+        CollectionId="arc-face-rec-test",
+        FaceMatchThreshold=80,
+    )
 
+    for face in response['FaceMatches']:
         face = response['FaceMatches'][0]['Face']
         output += "Face Detected: " + face['ExternalImageId'] + ", Confidence: " + str(face['Confidence']) + '<br>'
     person = output
-    sys.stderr.write(output + '\n\n')
+    # sys.stderr.write(output + '\n\n')
     processing = False
     return output
 
