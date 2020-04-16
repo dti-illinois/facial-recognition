@@ -3,7 +3,7 @@ import boto3
 import base64
 import os
 
-app = Flask(__name__, static_url_path='', static_folder='static/picojs')
+app = Flask(__name__, static_url_path='')
 app.secret_key = str(os.urandom(16))
 rekognition = boto3.client("rekognition", "us-west-2")
 
