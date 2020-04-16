@@ -16,21 +16,7 @@ rekognition = boto3.client("rekognition", "us-west-2")
 
 @app.route('/')
 def main_page():
-    session["is_processing"] = False
     return render_template("index.html")
-
-
-@app.route('/people_detected', methods=['POST'])
-def process_people_detected():
-    people_detected = request.data.decode("utf-8")
-    session['people_detected'] = people_detected
-    # sys.stderr.write(people_detected + '\n\n')
-    return people_detected
-
-
-@app.route('/people_detected', methods=['GET'])
-def return_people_detected():
-    return session.get('people_detected', "None")
 
 
 @app.route('/detect', methods=['POST'])
@@ -59,10 +45,8 @@ def detect_faces():
     except rekognition.exceptions.InvalidParameterException:
         output = "None"
 
-    # sys.stderr.write(output + '\n\n')
-    session['people_detected'] = output
     return output
 
 
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0")
