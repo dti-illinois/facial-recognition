@@ -12,6 +12,8 @@
 	</head>
 	<script>
 		var initialized = false;
+		var gotRecognitionResult = true;
+
 		function button_callback() {
 			/*
 				(0) check whether we're already running face detection
@@ -80,36 +82,31 @@
 					}
 				}
 
-				// Only send image to server and update people detected around once a second (using Date object in javascript)
-				var d = new Date();
-				if (d.getTime() % 1000 < 50) {
+				// Only send image to server once previous response has been received
+				if (gotRecognitionResult) {
 					if(numFaces > 0) {
 						var dataURL = can.toDataURL()
 						var xhttp = new XMLHttpRequest();
 						xhttp.open("POST", "detect", true);
 						xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+						xhttp.timeout = 10000;
+						xhttp.onreadystatechange = function () {
+							// Update current list of people detected element
+							if (this.readyState == 4 && this.status == 200) {
+								document.getElementById("people").innerHTML = this.responseText;
+							}
+							gotRecognitionResult = true;
+						};
+						gotRecognitionResult = false;
 						xhttp.send(dataURL);
 					} else {
-						var xhttp = new XMLHttpRequest();
-						xhttp.open("POST", "person", false);
-						xhttp.send("None");
+						document.getElementById("people").innerHTML = "None";
 					}
-
-					// Update current list of people detected element
-					var xhttp = new XMLHttpRequest();
-					xhttp.onreadystatechange = function () {
-						if (this.readyState == 4 && this.status == 200) {
-							document.getElementById("people").innerHTML = this.responseText;
-							console.log(this.responseText);
-						}
-					};
-					xhttp.open("GET", "person?t=" + Math.random(), true);
-					xhttp.send();
 				}
 
 				// draw detections
 				for(i=0; i<dets.length; ++i)
-					// check the detection score
+					// check the detection scores
 					// if it's above the threshold, draw it
 					// (the constant 50.0 is empirical: other cascades might require a different one)
 					if(dets[i][3]>50.0)
