@@ -1,12 +1,6 @@
-from flask import Flask, render_template
-from flask import request, session
-import sys
-import threading
-import cv2
+from flask import Flask, render_template, request, session
 import boto3
-import requests
 import base64
-import numpy as np
 import os
 
 app = Flask(__name__, static_url_path='', static_folder='static/picojs')
@@ -21,17 +15,12 @@ def main_page():
 
 @app.route('/detect', methods=['POST'])
 def detect_faces():
-    # Get raw request data, remove header, and convert to image
-    encoded_data = request.get_data()[22:]
-    nparr = np.frombuffer(base64.b64decode(encoded_data), np.uint8)
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
     # Send image to AWS Rekognition and process result
     output = ""
     try:
         response = rekognition.search_faces_by_image(
             Image={
-                "Bytes": bytearray(cv2.imencode('.png', img)[1])
+                "Bytes": base64.b64decode(request.get_data()[22:])
             },
             CollectionId="arc-face-rec-test",
             FaceMatchThreshold=80,
@@ -43,6 +32,7 @@ def detect_faces():
                 face['ExternalImageId'] + ", Confidence: " + \
                 str(face['Confidence']) + '<br>'
     except rekognition.exceptions.InvalidParameterException:
+        # Catches exception when no faces are detected in the input image
         output = "None"
 
     return output
