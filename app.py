@@ -3,7 +3,7 @@ import boto3
 import base64
 import os
 
-app = Flask(__name__, static_url_path='')
+app = Flask(__name__)
 app.secret_key = str(os.urandom(16))
 rekognition = boto3.client("rekognition", "us-west-2")
 
@@ -11,6 +11,11 @@ rekognition = boto3.client("rekognition", "us-west-2")
 @app.route('/')
 def main_page():
     return render_template("index.html")
+
+
+@app.route('/login')
+def login_page():
+    return render_template("login.html")
 
 
 @app.route('/detect', methods=['POST'])
