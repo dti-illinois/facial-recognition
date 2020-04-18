@@ -55,7 +55,7 @@
 		/*
 			(3) get the drawing context on the canvas and define a function to transform an RGBA image to grayscale
 		*/
-		var can = document.getElementsByTagName('canvas')[0]
+		var can = document.getElementById('video')
 		var ctx = can.getContext('2d');
 
 		function rgba_to_grayscale(rgba, nrows, ncols) {
@@ -99,18 +99,45 @@
 			dets = update_memory(dets);
 			dets = pico.cluster_detections(dets, 0.2); // set IoU threshold to 0.2
 
-			// Send image to server if faces are detected
+			// draw detections
 			var numFaces = 0;
 			for (i = 0; i < dets.length; ++i) {
+				// check the detection scores
+				// if it's above the threshold, draw it
+				// (the constant 50.0 is empirical: other cascades might require a different one)
 				if (dets[i][3] > 50.0) {
 					++numFaces;
+					ctx.beginPath();
+					ctx.arc(dets[i][1], dets[i][0], dets[i][2] / 2, 0, 2 * Math.PI, false);
+					ctx.lineWidth = 3;
+					ctx.strokeStyle = 'red';
+					ctx.stroke();
 				}
 			}
 
-			// Only send image to server once previous response has been received
+			// Send individual faces to server when faces are detected and only is previous response has been received
 			if (gotRecognitionResult) {
 				if (numFaces > 0) {
-					var dataURL = can.toDataURL()
+					var faceImages = ""
+					for (i = 0; i < dets.length; ++i) {
+						console.log(dets[i]);
+						centerx = dets[i][1];
+						centery = dets[i][0];
+						diameter = dets[i][2];
+						radius = diameter / 2;
+
+						var hidden_canvas = document.createElement('canvas');
+						hidden_canvas.width = diameter;
+						hidden_canvas.height = diameter;
+						var hidden_ctx = hidden_canvas.getContext('2d');
+
+						hidden_ctx.drawImage(can, centerx-radius, centery-radius,
+							diameter, diameter, 0, 0, diameter, diameter);
+
+						faceImages += hidden_canvas.toDataURL()
+					}
+					
+					
 					var xhttp = new XMLHttpRequest();
 					xhttp.open("POST", "detect", true);
 					xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -123,26 +150,11 @@
 						gotRecognitionResult = true;
 					};
 					gotRecognitionResult = false;
-					xhttp.send(dataURL);
+					xhttp.send(faceImages);
 				} else {
 					document.getElementById("people").innerHTML = "None";
 				}
 			}
-
-			// draw detections
-			for (i = 0; i < dets.length; ++i)
-				// check the detection scores
-				// if it's above the threshold, draw it
-				// (the constant 50.0 is empirical: other cascades might require a different one)
-				if (dets[i][3] > 50.0) {
-					var r, c, s;
-
-					ctx.beginPath();
-					ctx.arc(dets[i][1], dets[i][0], dets[i][2] / 2, 0, 2 * Math.PI, false);
-					ctx.lineWidth = 3;
-					ctx.strokeStyle = 'red';
-					ctx.stroke();
-				}
 		}
 		/*
 			(5) instantiate camera handling (see https://github.com/cbrandolino/camvas)
@@ -186,9 +198,19 @@
 
 	<div class="jumbotron">
 		<div class="row">
+			<div class="col-lg-12">
+				<div class="bs-component">
+					<center>
+						<h1>Realtime Facial Recognition</h1>
+					</center>
+					<br>
+				</div>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-lg-4">
 				<div class="bs-component">
-					<h2>Current List of People Detected:</h2>
+					<h3>Current List of People Recognized:</h3>
 					<p id="people"></p>
 					<br><br>
 				</div>
@@ -198,16 +220,16 @@
 					<center>
 						<button style="margin:30px" class="btn btn-success my-2 my-sm-0" type="button"
 							onclick="button_callback()">
-							Start Detection
+							Start Recognition
 						</button>
 						<button style="margin:30px" class="btn btn-danger my-2 my-sm-0" type="button"
 							onclick="stop_detecting()">
-							Stop Detection
+							Stop Recognition
 						</button>
 					</center>
 					<p>
 						<br>
-						<center><canvas width=640 height=480></canvas></center>
+						<center><canvas width=640 height=480 id="video"></canvas></center>
 					</p>
 				</div>
 
