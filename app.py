@@ -22,7 +22,7 @@ def login_page():
 def detect_faces():
     # Send image to AWS Rekognition and process result
     output = ""
-    faceImages  = str(request.get_data()).split("data:image/png;base64,")
+    faceImages = str(request.get_data()).split("data:image/png;base64,")
     for i in range(1, len(faceImages)):
         try:
             response = rekognition.search_faces_by_image(
@@ -32,12 +32,16 @@ def detect_faces():
                 CollectionId="arc-face-rec-test"
             )
 
+            if len(response['FaceMatches']) == 0:
+                output = "Unrecognized Face<br>"
+                continue
+
             resp = response['FaceMatches'][0]
-            output += "Face Detected: " + resp['Face']['ExternalImageId'] + \
+            output += resp['Face']['ExternalImageId'] + \
                 ", Similarity: " + str(resp['Similarity']) + '<br>'
         except rekognition.exceptions.InvalidParameterException:
             # Catches exception when no faces are detected in the input image
-            output = "None"
+            output = "Recognition did not detect face<br>"
 
     return output
 
