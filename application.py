@@ -8,17 +8,17 @@ application.secret_key = str(os.urandom(16))
 rekognition = boto3.client("rekognition", "us-west-2")
 
 
-@app.route('/')
+@application.route('/')
 def main_page():
     return render_template("index.html")
 
 
-@app.route('/login')
+@application.route('/login')
 def login_page():
     return render_template("login.html")
 
 
-@app.route('/detect', methods=['POST'])
+@application.route('/detect', methods=['POST'])
 def detect_faces():
     # Send image to AWS Rekognition and process result
     output = ""
