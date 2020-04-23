@@ -3,8 +3,8 @@ import boto3
 import base64
 import os
 
-app = Flask(__name__, static_url_path='')
-app.secret_key = str(os.urandom(16))
+application = Flask(__name__, static_url_path='')
+application.secret_key = str(os.urandom(16))
 rekognition = boto3.client("rekognition", "us-west-2")
 
 
@@ -47,4 +47,4 @@ def detect_faces():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0")
+    application.run(debug=True, host="0.0.0.0")
