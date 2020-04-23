@@ -7,3 +7,8 @@ __pycache__/
 kinesis_ios/
 output/
 dataset/Abhinav Tekulapally/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
