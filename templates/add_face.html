@@ -9,9 +9,18 @@
 <script>
 	$('#AddFace').addClass('active');
 </script>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages %}
+{% with successes = get_flashed_messages(category_filter=['success']) %}
+{% if successes %}
+{% for message in successes %}
+<div class="alert alert-success" role="alert">
+	{{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+{% with errors = get_flashed_messages(category_filter=['error']) %}
+{% if errors %}
+{% for message in errors %}
 <div class="alert alert-danger" role="alert">
 	{{ message }}
 </div>

@@ -39,16 +39,16 @@ def add_face_page():
                     print(response)
 
                 if len(response['UnindexedFaces']) > 0:
-                    flash('Image not usable. Please try another image.')
+                    flash('Image not usable. Please try another image.', 'error')
                 else:
-                    flash('Successfully added face.')
+                    flash('Successfully added face.', 'success')
             except rekognition.exceptions.InvalidParameterException:
-                flash('Image not usable. Please try another image.')
+                flash('Image not usable. Please try another image.', 'error')
         else:
             if len(form.image.data) == 0:
-                flash("Must use a photo.")
+                flash("Must use a photo.", 'error')
             else:
-                flash('Invalid Form Parameters.')
+                flash('Invalid Form Parameters.', 'error')
     return render_template("add_face.html", form=form)
 
 
