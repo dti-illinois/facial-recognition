@@ -11,6 +11,7 @@ rekognition = boto3.client("rekognition", "us-west-2")
 admin_pass = os.environ.get('FACIAL_RECOGNITION_ADMIN_PASS', "default")
 login_manager = LoginManager()
 login_manager.init_app(application)
+login_manager.login_view = "login"
 
 @application.route('/')
 def main_page():
@@ -52,7 +53,8 @@ def detect_faces():
 
 class User(UserMixin):
     def get_id(self):
-        return "admin"
+        self.id = "admin"
+        return self.id
 
 AdminUser = User()
 
@@ -69,8 +71,6 @@ def unauthorized():
 def login_page():
     form = LoginForm()
     if form.validate_on_submit():
-        # Login and validate the user.
-        # user should be an instance of your `User` class
         if form.username.data == "admin" and form.password.data == admin_pass:
             login_user(AdminUser)
             return redirect(('/'))

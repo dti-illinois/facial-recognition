@@ -21,7 +21,7 @@
 				<div class="card-body">
 					<h5 class="card-title text-center">Log In</h5>
 					{% block content %}
-					<form action="" method="post" novalidate>
+					<form action="/login" method="post" novalidate>
 						{{ form.hidden_tag() }}
 						<p>
 							{{ form.username.label }}<br>
