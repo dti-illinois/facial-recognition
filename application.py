@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, flash
+from flask import Flask, render_template, request, session, redirect, flash, url_for
 import boto3
 import base64
 import os
@@ -78,10 +78,10 @@ def login_page():
     if form.validate_on_submit():
         if form.username.data == "admin" and form.password.data == admin_pass:
             login_user(AdminUser)
-            return redirect('/')
+            return redirect(url_for('main_page'))
         else:
             flash('Invalid username or password.')
-            return redirect('/login')
+            return redirect(url_for('login_page'))
     return render_template("login.html", form=form)
 
 
@@ -89,7 +89,7 @@ def login_page():
 @login_required
 def logout():
     logout_user()
-    return redirect('/')
+    return redirect(url_for('main_page'))
 
 
 if __name__ == '__main__':
