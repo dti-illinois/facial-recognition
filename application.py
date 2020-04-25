@@ -6,12 +6,12 @@ from application.forms import *
 from flask_login import LoginManager, login_required, login_user, logout_user, UserMixin
 
 application = Flask(__name__, static_url_path='')
-application.secret_key = str(os.urandom(16))
-rekognition = boto3.client("rekognition", "us-west-2")
 admin_pass = os.environ.get('FACIAL_RECOGNITION_ADMIN_PASS', "default")
+application.secret_key = os.environ.get('FLASK_APP_SECRET_KEY', str(os.urandom(16)))
+rekognition = boto3.client("rekognition", "us-west-2")
 login_manager = LoginManager()
 login_manager.init_app(application)
-login_manager.login_view = "login"
+
 
 @application.route('/')
 def main_page():
@@ -51,21 +51,26 @@ def detect_faces():
 
     return output
 
+
 class User(UserMixin):
     def get_id(self):
         self.id = "admin"
         return self.id
 
+
 AdminUser = User()
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return AdminUser
 
+
 @login_manager.unauthorized_handler
 def unauthorized():
     flash('Must be logged in first.')
     return login_page()
+
 
 @application.route('/login', methods=['GET', 'POST'])
 def login_page():
@@ -73,17 +78,19 @@ def login_page():
     if form.validate_on_submit():
         if form.username.data == "admin" and form.password.data == admin_pass:
             login_user(AdminUser)
-            return redirect(('/'))
+            return redirect('/')
         else:
             flash('Invalid username or password.')
-            return redirect(('/login'))
+            return redirect('/login')
     return render_template("login.html", form=form)
+
 
 @application.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return redirect("/")
+    return redirect('/')
+
 
 if __name__ == '__main__':
     application.run(debug=True, host="0.0.0.0")
