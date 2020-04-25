@@ -18,10 +18,38 @@ def main_page():
     return render_template("index.html")
 
 
-@application.route('/add_face')
+@application.route('/add_face', methods=['GET', 'POST'])
 @login_required
 def add_face_page():
-    return render_template("add_face.html")
+    # Index new face to collection
+    form = AddFaceForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            try:
+                response = rekognition.index_faces(
+                    Image={
+                        "Bytes": base64.b64decode(form.image.data[22:])
+                    },
+                    CollectionId="arc-face-rec-test",
+                    MaxFaces=1,
+                    ExternalImageId=form.first_name.data + '_' + form.last_name.data
+                )
+
+                if(application.debug):
+                    print(response)
+
+                if len(response['UnindexedFaces']) > 0:
+                    flash('Image not usable. Please try another image.')
+                else:
+                    flash('Successfully added face.')
+            except rekognition.exceptions.InvalidParameterException:
+                flash('Image not usable. Please try another image.')
+        else:
+            if len(form.image.data) == 0:
+                flash("Must use a photo.")
+            else:
+                flash('Invalid Form Parameters.')
+    return render_template("add_face.html", form=form)
 
 
 @application.route('/detect', methods=['POST'])
@@ -75,13 +103,16 @@ def unauthorized():
 @application.route('/login', methods=['GET', 'POST'])
 def login_page():
     form = LoginForm()
-    if form.validate_on_submit():
-        if form.username.data == "admin" and form.password.data == admin_pass:
-            login_user(AdminUser)
-            return redirect(url_for('main_page'))
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            if form.username.data == "admin" and form.password.data == admin_pass:
+                login_user(AdminUser)
+                return redirect(url_for('main_page'))
+            else:
+                flash('Invalid username or password.')
+                return redirect(url_for('login_page'))
         else:
-            flash('Invalid username or password.')
-            return redirect(url_for('login_page'))
+            flash('Form not valid.')
     return render_template("login.html", form=form)
 
 
