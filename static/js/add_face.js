@@ -101,23 +101,15 @@ function start_face_search() {
             takePhoto = false;
             detect = false;
 
-            for (i = 0; i < dets.length; ++i) {
-                console.log(dets[i]);
-                centerx = dets[i][1];
-                centery = dets[i][0];
-                diameter = dets[i][2];
-                radius = diameter / 2;
+            var hidden_canvas = document.createElement('canvas');
+            hidden_canvas.width = diameter;
+            hidden_canvas.height = diameter;
+            var hidden_ctx = hidden_canvas.getContext('2d');
 
-                var hidden_canvas = document.createElement('canvas');
-                hidden_canvas.width = diameter;
-                hidden_canvas.height = diameter;
-                var hidden_ctx = hidden_canvas.getContext('2d');
+            hidden_ctx.drawImage(can, centerx - radius, centery - radius,
+                diameter, diameter, 0, 0, diameter, diameter);
 
-                hidden_ctx.drawImage(can, centerx - radius, centery - radius,
-                    diameter, diameter, 0, 0, diameter, diameter);
-
-                document.getElementById('face_image').value = hidden_canvas.toDataURL();
-            }
+            document.getElementById('face_image').value = can.toDataURL();
         }
     }
     /*

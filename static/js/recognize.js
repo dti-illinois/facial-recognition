@@ -111,7 +111,12 @@ function button_callback() {
                     hidden_ctx.drawImage(can, centerx - radius, centery - radius,
                         diameter, diameter, 0, 0, diameter, diameter);
 
-                    faceImages += hidden_canvas.toDataURL()
+                    // If only one face in frame send entire frame instead of just face
+                    if (numFaces == 1) {
+                        faceImages += can.toDataURL()
+                    } else {
+                        faceImages += hidden_canvas.toDataURL()
+                    }
                 }
 
 
