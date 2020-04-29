@@ -11,7 +11,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* Need to have python3 and pip installed.
+* Need to have python3 and pip3 installed.
 * AWS Credentials with access to the AWS Rekognition APIs
     * Follow instructions at [AWS Rekognition CLI Setup](https://docs.aws.amazon.com/rekognition/latest/dg/setup-awscli-sdk.html) and complete up to step 2
 * If not already created, create an AWS Rekogniton collection 
@@ -29,7 +29,7 @@ Navigate to the project directory and install python packages.
 
 ```
 cd FacialRecognition
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 * Export the collection id as an environment variable or change it in application.py
@@ -45,7 +45,7 @@ export FLASK_APP_SECRET_KEY="RANDOM SECRET KEY FOR FLASK"
 Run Application and open it in the browser.
 
 ```
-python application.py
+python3 application.py
 ```
 
 ## Deployment
@@ -57,7 +57,7 @@ If not accessing from the local machine the website needs to be accessed using H
 * [PicoJs](https://github.com/tehnokv/picojs) - Local Browser Face Detection
 * [AWS Rekognition](https://aws.amazon.com/rekognition/) - Face Recognition
 * [Flask](https://flask.palletsprojects.com/en/1.1.x/) - Back End Framework
-* [Bootstrap](https://rometools.github.io/rome/) - Front End Framework
+* [Bootstrap](https://getbootstrap.com) - Front End Framework
 
 ## Authors
 
