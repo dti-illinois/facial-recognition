@@ -101,14 +101,6 @@ function start_face_search() {
             takePhoto = false;
             detect = false;
 
-            var hidden_canvas = document.createElement('canvas');
-            hidden_canvas.width = diameter;
-            hidden_canvas.height = diameter;
-            var hidden_ctx = hidden_canvas.getContext('2d');
-
-            hidden_ctx.drawImage(can, centerx - radius, centery - radius,
-                diameter, diameter, 0, 0, diameter, diameter);
-
             document.getElementById('face_image').value = can.toDataURL();
         }
     }
