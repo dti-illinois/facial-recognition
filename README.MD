@@ -1,6 +1,6 @@
 # Facial Recognition
 
-The purpose of this project is to provide a prrof of concept for using facial recognition. Some use cases include automatically taking class attendance. The project is built by doing face detection locally in the browser and sending the detected faces to Flask backend which calls the AWS Rekognition service to do the face recognition and sends the response back to the user. The client is broswer based and works in all major browsers as well as mobile.
+The purpose of this project is to provide a proof of concept for using facial recognition. Some use cases include automatically taking class attendance. The project is built by doing face detection locally in the browser. It sends the detected faces to the backend which calls the AWS Rekognition service to perform the face recognition and sends the response back to the user. The client is broswer based and works in all major browsers as well as mobile.
 
 <img src=".github/Face_Recognition.png" alt="Face Rekognition Page"/>
 <img src=".github/Add_Face.png" alt="Add Face Page"/>
@@ -22,13 +22,13 @@ These instructions will get you a copy of the project up and running on your loc
 After completing prerequites, clone repository.
 
 ```
-git clone https://github.com/IllinoisTechServicesSRTILab/arc-facial-recognition.git FacialRecognition
+git clone https://github.com/IllinoisTechServicesSRTILab/arc-facial-recognition.git facial-recognition
 ```
 
 Navigate to the project directory and install python packages.
 
 ```
-cd FacialRecognition
+cd facial-recognition
 pip3 install -r requirements.txt
 ```
 
