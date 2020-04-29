@@ -22,7 +22,7 @@ These instructions will get you a copy of the project up and running on your loc
 After completing prerequites, clone repository.
 
 ```
-git clone https://github.com/IllinoisTechServicesSRTILab/arc-facial-recognition.git facial-recognition
+git clone https://github.com/IllinoisTechServicesSRTILab/facial-recognition.git
 ```
 
 Navigate to the project directory and install python packages.
