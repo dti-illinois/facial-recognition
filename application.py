@@ -7,8 +7,9 @@ from flask_login import LoginManager, login_required, login_user, logout_user, U
 
 application = Flask(__name__, static_url_path='')
 admin_pass = os.environ.get('FACIAL_RECOGNITION_ADMIN_PASS', "default")
+collection_id = os.environ.get('FACIAL_RECOGNITION_COLLECTION_ID', "arc-face-rec-test")
 application.secret_key = os.environ.get('FLASK_APP_SECRET_KEY', str(os.urandom(16)))
-rekognition = boto3.client("rekognition", "us-west-2")
+rekognition = boto3.client("rekognition")
 login_manager = LoginManager()
 login_manager.init_app(application)
 
@@ -31,7 +32,7 @@ def add_face_page():
                     Image={
                         "Bytes": base64.b64decode(form.image.data[22:])
                     },
-                    CollectionId="arc-face-rec-test",
+                    CollectionId=collection_id,
                     MaxFaces=1,
                     ExternalImageId=form.first_name.data + '_' + form.last_name.data
                 )
@@ -64,7 +65,7 @@ def detect_faces():
                 Image={
                     "Bytes": base64.b64decode(str.encode(faceImages[i]))
                 },
-                CollectionId="arc-face-rec-test"
+                CollectionId=collection_id
             )
 
             if len(response['FaceMatches']) == 0:
