@@ -32,11 +32,13 @@ cd facial-recognition
 pip3 install -r requirements.txt
 ```
 
+* Export the aws region as an environment variable or change it in application.py. The default is us-west-2.
 * Export the collection id as an environment variable or change it in application.py
 * By default only one admin user exists. Export the admin_pass as an environment variable or change it in application.py
 * Export the application secret key as an environment variable or change it in application.py.
 
 ```
+export FACIAL_RECOGNITION_AWS_REGION="AWS REGION"
 export FACIAL_RECOGNITION_COLLECTION_ID="YOUR COLLECTION ID"
 export FACIAL_RECOGNITION_ADMIN_PASS="YOUR ADMIN PASS"
 export FLASK_APP_SECRET_KEY="RANDOM SECRET KEY FOR FLASK"
