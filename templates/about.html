@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Realtime Face Detection and Recognition{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block header %}
+{{ super() }}
+<h1 id="facial-recognition">Facial Recognition</h1>
+<p>The purpose of this project is to provide a proof of concept for using facial recognition. Some use cases include
+	automatically taking class attendance. The project is built by doing face detection locally in the browser. It sends
+	the detected faces to the backend which calls the AWS Rekognition service to perform the face recognition and sends
+	the response back to the user. The client is browser based and works in all major browsers as well as mobile.
+</p>
+<p>
+	<a href="https://github.com/IllinoisTechServicesSRTILab/facial-recognition">Facial Recognition GitHub page</a>
+</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>These instructions will get you a copy of the project up and running on your local machine for development purposes.
+</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+	<li>Need to have python3 and pip3 installed.</li>
+	<li>AWS Credentials with access to the AWS Rekognition APIs<ul>
+			<li>Follow instructions at <a
+					href="https://docs.aws.amazon.com/rekognition/latest/dg/setup-awscli-sdk.html">AWS Rekognition CLI
+					Setup</a> and complete up to step 2</li>
+		</ul>
+	</li>
+	<li>If not already created, create an AWS Rekogniton collection <ul>
+			<li>Follow instructions at <a
+					href="https://docs.aws.amazon.com/rekognition/latest/dg/create-collection-procedure.html">AWS
+					Rekogniton Create Collection</a></li>
+		</ul>
+	</li>
+</ul>
+<h3 id="installing">Installing</h3>
+<p>After completing prerequisites, clone repository.</p>
+<pre><code>git <span class="hljs-keyword">clone</span> <span class="hljs-title">https</span>://github.com/IllinoisTechServicesSRTILab/facial-recognition.git
+</code></pre>
+<p>Navigate to the project directory and install python packages.</p>
+<pre><code><span class="hljs-built_in">cd</span> facial-recognition
+pip3 install -r requirements.txt
+</code></pre>
+<ul>
+	<li>Export the aws region as an environment variable or change it in application.py. The default is us-west-2.</li>
+	<li>Export the collection id as an environment variable or change it in application.py</li>
+	<li>By default only one admin user exists. Export the admin_pass as an environment variable or change it in
+		application.py</li>
+	<li>Export the application secret key as an environment variable or change it in application.py.</li>
+</ul>
+<pre><code><span class="hljs-keyword">export</span> FACIAL_RECOGNITION_AWS_REGION=<span class="hljs-string">"AWS REGION"</span>
+<span class="hljs-keyword">export</span> FACIAL_RECOGNITION_COLLECTION_ID=<span class="hljs-string">"YOUR COLLECTION ID"</span>
+<span class="hljs-keyword">export</span> FACIAL_RECOGNITION_ADMIN_PASS=<span class="hljs-string">"YOUR ADMIN PASS"</span>
+<span class="hljs-keyword">export</span> FLASK_APP_SECRET_KEY=<span class="hljs-string">"RANDOM SECRET KEY FOR FLASK"</span>
+</code></pre>
+<p>Run Application and open it in the browser.</p>
+<pre><code><span class="hljs-keyword">python3</span> application.<span class="hljs-keyword">py</span>
+</code></pre>
+<h2 id="deployment">Deployment</h2>
+<p>If not accessing from the local machine the website needs to be accessed using HTTPS or the browser will not let the
+	page have access to the webcam. Need to change code to support multiple users instead of only one admin user. Can be
+	deployed using AWS Elastic Beanstalk or manually on any server by following <a
+		href="https://flask.palletsprojects.com/en/1.1.x/tutorial/deploy/">Moving Flask To Production</a>. To easily
+	access the server using https use <a href="https://ngrok.com">Ngrok</a>.</p>
+<h2 id="built-with">Built With</h2>
+<ul>
+	<li><a href="https://github.com/tehnokv/picojs">PicoJs</a> - Local Browser Face Detection</li>
+	<li><a href="https://aws.amazon.com/rekognition/">AWS Rekognition</a> - Face Recognition</li>
+	<li><a href="https://flask.palletsprojects.com/en/1.1.x/">Flask</a> - Back End Framework</li>
+	<li><a href="https://getbootstrap.com">Bootstrap</a> - Front End Framework</li>
+</ul>
+<h2 id="authors">Authors</h2>
+<ul>
+	<li>Abhinav Tekulapally</li>
+</ul>
+
+{% endblock %}
